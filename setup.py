@@ -16,7 +16,7 @@ from __future__ import print_function
 import os
 import sys
 
-name = "notebookext"
+name = "notebook"
 
 if sys.version_info < (3, 4):
     pip_message = 'This may be due to an out of date pip. Make sure you have pip >= 9.0.1.'
