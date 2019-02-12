@@ -80,6 +80,12 @@ for more information.
     version         = version,
     packages        = find_packages(),
     package_data    = find_package_data(),
+    include_package_data=True,
+    data_files=[
+        ("etc/jupyter/jupyter_server_config.d", [
+            "jupyter-config/jupyter_server_config.d/{name}.json".format(name=name)
+        ])
+    ],
     author          = 'Jupyter Development Team',
     author_email    = 'jupyter@googlegroups.com',
     url             = 'http://jupyter.org',
@@ -123,9 +129,9 @@ for more information.
     python_requires = '>=3.4', 
     entry_points = {
         'console_scripts': [
-            'jupyter-notebookext = notebook.notebookapp:main',
+            'jupyter-notebook = notebook.notebookapp:main',
             'jupyter-nbextension = notebook.nbextensions:main',
-            'jupyter-serverextension = notebook.serverextensions:main',
+            #'jupyter-serverextension = notebook.serverextensions:main',
             'jupyter-bundlerextension = notebook.bundler.bundlerextensions:main',
         ]
     },
