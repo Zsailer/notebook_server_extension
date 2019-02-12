@@ -36,3 +36,11 @@ This repo is **experimental** and meant to demonstrate how the notebook could be
     ```
     jupyter server --default_url="/tree"
     ```
+
+## How does it work?
+
+Here's a short list of what's happening" 
+* All handlers inherit from the `JupyterExtensionHandler` (i.e. [see here](https://github.com/Zsailer/notebook_server_extension/blob/master/notebook/base/handlers.py))
+* `NotebookApp` inherits from `JupyterExtensionApp`. 
+* `load_jupyter_server_extension` loads config and appends handlers to jupyter server.
+
