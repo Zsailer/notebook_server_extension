@@ -5,11 +5,12 @@
 
 from tornado import web
 import os
-from ..base.handlers import IPythonHandler, path_regex
-from ..utils import url_path_join, url_escape
+from jupyter_server.base.handlers import path_regex
+from jupyter_server.utils import url_path_join, url_escape
 
+from ..base.handlers import NotebookExtensionHandler
 
-class TreeHandler(IPythonHandler):
+class TreeHandler(NotebookExtensionHandler):
     """Render the tree view, listing notebooks, etc."""
 
     def generate_breadcrumbs(self, path):

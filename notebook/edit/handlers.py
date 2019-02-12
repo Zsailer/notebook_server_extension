@@ -5,10 +5,12 @@
 # Distributed under the terms of the Modified BSD License.
 
 from tornado import web
-from ..base.handlers import IPythonHandler, path_regex
-from ..utils import url_escape
+from jupyter_server.base.handlers import path_regex
+from jupyter_server.utils import url_escape
 
-class EditorHandler(IPythonHandler):
+from ..base.handlers import NotebookExtensionHandler
+
+class EditorHandler(NotebookExtensionHandler):
     """Render the text editor interface."""
     @web.authenticated
     def get(self, path):

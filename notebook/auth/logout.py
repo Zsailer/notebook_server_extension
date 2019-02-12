@@ -4,10 +4,10 @@
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
 
-from ..base.handlers import IPythonHandler
+from ..base.handlers import NotebookExtensionHandler
 
 
-class LogoutHandler(IPythonHandler):
+class LogoutHandler(NotebookExtensionHandler):
 
     def get(self):
         self.clear_login_cookie()
