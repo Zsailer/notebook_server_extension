@@ -4,11 +4,15 @@
 
 This repo is **experimental** and meant to demonstrate how the notebook could be launched as a frontend+server extension. 
 
+## Install
+
+**Important**: use a virtual environment to avoid messing with your actually notebook installation. 
+
 ## Ways to launch
 
 1. Run the notebook app directly.
     ```
-    jupyter notebookext
+    jupyter notebook
     ```
 
 2. Use jupyter server to launch the notebook.

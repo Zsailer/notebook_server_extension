@@ -16,7 +16,7 @@ from __future__ import print_function
 import os
 import sys
 
-name = "notebook"
+name = "notebookext"
 
 if sys.version_info < (3, 4):
     pip_message = 'This may be due to an out of date pip. Make sure you have pip >= 9.0.1.'
@@ -123,7 +123,7 @@ for more information.
     python_requires = '>=3.4', 
     entry_points = {
         'console_scripts': [
-            'jupyter-notebook = notebook.notebookapp:main',
+            'jupyter-notebookext = notebook.notebookapp:main',
             'jupyter-nbextension = notebook.nbextensions:main',
             'jupyter-serverextension = notebook.serverextensions:main',
             'jupyter-bundlerextension = notebook.bundler.bundlerextensions:main',

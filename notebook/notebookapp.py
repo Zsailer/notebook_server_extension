@@ -158,7 +158,7 @@ aliases = dict(base_aliases)
 # NotebookApp
 #-----------------------------------------------------------------------------
 
-class NotebookApp(JupyterServerExtensionApp):
+class NotebookExtApp(JupyterServerExtensionApp):
 
     name = 'jupyter-notebook'
     version = __version__
@@ -801,4 +801,4 @@ class NotebookApp(JupyterServerExtensionApp):
 # Main entry point
 #-----------------------------------------------------------------------------
 
-main = launch_new_instance = NotebookApp.launch_instance
+main = launch_new_instance = NotebookAppExt.launch_instance
