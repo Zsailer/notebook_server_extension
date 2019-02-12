@@ -2,7 +2,7 @@
 
 **The classic notebook as a server extension.** 
 
-This repo is **experimental** and meant to demonstrate how the notebook could be launched as a frontend+server extension. 
+This repo is **experimental** and meant to demonstrate how the notebook could be launched as a frontend+server extension. It is a fork of the classic notebook, refactored to use the `jupyter_server` and `jupyter_server_extension` dependencies. 
 
 ## Install
 
