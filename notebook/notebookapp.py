@@ -100,11 +100,9 @@ from jupyter_core.paths import jupyter_runtime_dir, jupyter_path
 from notebook._sysinfo import get_sys_info
 
 from jupyter_server._tz import utcnow, utcfromtimestamp
-from jupyter_server.utils import url_path_join, check_pid, url_escape, urljoin, pathname2url
+from jupyter_server.utils import url_path_join, check_pid, url_escape
 
-from jupyter_server_extension.application import JupyterServerExtensionApp
-
-from .server_extension import load_jupyter_server_extension
+from jupyter_server_extension.application import ExtensionApp
 
 #-----------------------------------------------------------------------------
 # Module globals
@@ -154,13 +152,25 @@ flags.update(boolean_flag('script', 'FileContentsManager.save_script',
 aliases = dict(base_aliases)
 
 
+
+
+def load_handlers(name):
+    """Load the (URL pattern, handler) tuples for each component."""
+    mod = __import__(name, fromlist=['default_handlers'])
+    return mod.default_handlers
+
 #-----------------------------------------------------------------------------
 # NotebookApp
 #-----------------------------------------------------------------------------
 
-class NotebookApp(JupyterServerExtensionApp):
+class NotebookApp(ExtensionApp):
 
     name = 'jupyter-notebook'
+    
+    # Name the extension
+    extension_name = 'notebook'
+
+
     version = __version__
     description = _("""The Jupyter HTML Notebook.
     
@@ -169,7 +179,6 @@ class NotebookApp(JupyterServerExtensionApp):
     aliases = aliases
     flags = flags
 
-    load_jupyter_server_extension = staticmethod(load_jupyter_server_extension)
 
     # file to be opened in the notebook server
     file_to_run = Unicode('', config=True)
@@ -796,6 +805,37 @@ class NotebookApp(JupyterServerExtensionApp):
     #         self.log.warning(_("Terminals not available (error was %s)"), e)
 
 
+    def initialize_handlers(self):
+        """Initialize notebook handlers"""
+        self.handlers = []
+        self.handlers.extend([(r"/login", self.login_handler_class)])
+        self.handlers.extend([(r"/logout", self.logout_handler_class)])
+        self.handlers.extend(load_handlers('notebook.tree.handlers'))
+        self.handlers.extend(load_handlers('notebook.notebook.handlers'))    
+
+    def initialize_settings(self):
+        """Initialize notebook settings. """
+        # Prepare 
+        _template_path = self.template_file_path
+        if isinstance(_template_path, py3compat.string_types):
+            _template_path = (_template_path,)
+        template_path = [os.path.expanduser(path) for path in _template_path]
+
+        jenv_opt = {"autoescape": True}
+
+        base_dir = os.path.realpath(os.path.join(__file__, '..', '..'))
+        dev_mode = os.path.exists(os.path.join(base_dir, '.git'))
+
+        env = Environment(loader=FileSystemLoader(template_path), extensions=['jinja2.ext.i18n'], **jenv_opt)
+        nbui = gettext.translation('nbui', localedir=os.path.join(
+            base_dir, 'jupyter_server/i18n'), fallback=True)
+        env.install_gettext_translations(nbui, newstyle=False)
+
+        settings = {
+            "notebook_jinja2_env": env,
+        }
+
+        self.settings.update(**settings)
 
 #-----------------------------------------------------------------------------
 # Main entry point

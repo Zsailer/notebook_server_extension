@@ -1,7 +1,7 @@
-from jupyter_server_extension.handler import JupyterExtensionHandler
+from jupyter_server_extension.handler import ExtensionHandler
 
 
-class NotebookExtensionHandler(JupyterExtensionHandler):
+class NotebookExtensionHandler(ExtensionHandler):
     """Base handler for the notebook extension.
     
     This handler stores
