@@ -102,7 +102,7 @@ from notebook._sysinfo import get_sys_info
 from jupyter_server._tz import utcnow, utcfromtimestamp
 from jupyter_server.utils import url_path_join, check_pid, url_escape
 
-from jupyter_server_extension.application import ExtensionApp
+from jupyter_server.extension.application import ExtensionApp
 
 #-----------------------------------------------------------------------------
 # Module globals
@@ -170,7 +170,6 @@ class NotebookApp(ExtensionApp):
     # Name the extension
     extension_name = 'notebook'
 
-
     version = __version__
     description = _("""The Jupyter HTML Notebook.
     
@@ -178,7 +177,6 @@ class NotebookApp(ExtensionApp):
     examples = _examples
     aliases = aliases
     flags = flags
-
 
     # file to be opened in the notebook server
     file_to_run = Unicode('', config=True)
@@ -814,7 +812,7 @@ class NotebookApp(ExtensionApp):
         self.handlers.extend(load_handlers('notebook.notebook.handlers'))    
 
     def initialize_settings(self):
-        """Initialize notebook settings. """
+        """Initialize notebook settings."""
         # Prepare 
         _template_path = self.template_file_path
         if isinstance(_template_path, py3compat.string_types):
@@ -842,3 +840,4 @@ class NotebookApp(ExtensionApp):
 #-----------------------------------------------------------------------------
 
 main = launch_new_instance = NotebookApp.launch_instance
+load_jupyter_server_extension = NotebookApp.load_jupyter_server_extension

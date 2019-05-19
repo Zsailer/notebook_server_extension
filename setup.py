@@ -16,7 +16,7 @@ from __future__ import print_function
 import os
 import sys
 
-name = "notebook_server_extension"
+name = "notebook"
 
 if sys.version_info < (3, 4):
     pip_message = 'This may be due to an out of date pip. Make sure you have pip >= 9.0.1.'
@@ -104,7 +104,7 @@ for more information.
     zip_safe = False,
     install_requires = [
         'jinja2',
-        'tornado>=4, <6',
+        'tornado>=5.0',
         # pyzmq>=17 is not technically necessary,
         # but hopefully avoids incompatibilities with Tornado 5. April 2018
         'pyzmq>=17',
@@ -126,7 +126,7 @@ for more information.
                  'nbval', 'nose-exclude', 'selenium', 'pytest', 'pytest-cov'],
         'test:sys_platform == "win32"': ['nose-exclude'],
     },
-    python_requires = '>=3.4', 
+    python_requires = '>=3.5',
     entry_points = {
         'console_scripts': [
             'jupyter-notebook = notebook.notebookapp:main',
@@ -137,45 +137,44 @@ for more information.
     },
 )
 
-# # Custom distutils/setuptools commands ----------
-# from distutils.command.build_py import build_py
-# from distutils.command.sdist import sdist
-# from setuptools.command.bdist_egg import bdist_egg
-# from setuptools.command.develop import develop
+# Custom distutils/setuptools commands ----------
+from distutils.command.build_py import build_py
+from distutils.command.sdist import sdist
+from setuptools.command.bdist_egg import bdist_egg
+from setuptools.command.develop import develop
 
-# class bdist_egg_disabled(bdist_egg):
-#     """Disabled version of bdist_egg
+class bdist_egg_disabled(bdist_egg):
+    """Disabled version of bdist_egg
 
-#     Prevents setup.py install from performing setuptools' default easy_install,
-#     which it should never ever do.
-#     """
-#     def run(self):
-#         sys.exit("Aborting implicit building of eggs. Use `pip install .` to install from source.")
+    Prevents setup.py install from performing setuptools' default easy_install,
+    which it should never ever do.
+    """
+    def run(self):
+        sys.exit("Aborting implicit building of eggs. Use `pip install .` to install from source.")
 
-# setup_args['cmdclass'] = {
-#     'build_py': css_js_prerelease(
-#             check_package_data_first(build_py)),
-#     'sdist' : css_js_prerelease(sdist, strict=True),
-#     'develop': css_js_prerelease(develop),
-#     'css' : CompileCSS,
-#     'backendtranslations': CompileBackendTranslation,
-#     'js' : CompileJS,
-#     'jsdeps' : Bower,
-#     'jsversion' : JavascriptVersion,
-#     'bdist_egg': bdist_egg if 'bdist_egg' in sys.argv else bdist_egg_disabled,
-# }
+setup_args['cmdclass'] = {
+    'build_py': css_js_prerelease(
+            check_package_data_first(build_py)),
+    'sdist' : css_js_prerelease(sdist, strict=True),
+    'develop': css_js_prerelease(develop),
+    'css' : CompileCSS,
+    'backendtranslations': CompileBackendTranslation,
+    'js' : CompileJS,
+    'jsdeps' : Bower,
+    'jsversion' : JavascriptVersion,
+    'bdist_egg': bdist_egg if 'bdist_egg' in sys.argv else bdist_egg_disabled,
+}
 
-# try:
-#     from wheel.bdist_wheel import bdist_wheel
-# except ImportError:
-#     pass
-# else:
-#     setup_args['cmdclass']['bdist_wheel'] = css_js_prerelease(bdist_wheel)
+try:
+    from wheel.bdist_wheel import bdist_wheel
+except ImportError:
+    pass
+else:
+    setup_args['cmdclass']['bdist_wheel'] = css_js_prerelease(bdist_wheel)
 
 # Run setup --------------------
 def main():
     setup(**setup_args)
-
 
 if __name__ == '__main__':
     main()

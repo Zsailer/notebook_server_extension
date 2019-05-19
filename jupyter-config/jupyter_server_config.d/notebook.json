@@ -1,7 +1,7 @@
 {
     "ServerApp": {
         "jpserver_extensions": {
-            "notebook_server_extension": true
+            "notebook": true
         }
     }
 }
